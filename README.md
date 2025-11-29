@@ -20,24 +20,34 @@ The main statistics include field goal, three-point, and free-throw percentages;
 ## Methodology  
 
 1. **Data Collection:**  
-   Team statistics were collected for several consecutive EuroLeague seasons using `pandas.read_html()` from the official EuroLeague website.  
-   Each season’s data table was merged into a single dataset with a new column, `Season`, for temporal reference.  
+   Team statistics will be collected for several consecutive EuroLeague seasons using `pandas.read_html()` from the official EuroLeague website.  
+   Each season’s data table will be merged into a single dataset with a new column, `Season`, for temporal reference.  
 
 2. **Data Cleaning and Feature Engineering:**  
-   - Standardized column names: FG% (Field Goal Percentage), 3P% (Three-Point Percentage), FT% (Free Throw Percentage), REB (Rebounds), AST (Assists), STL (Steals), BLK (Blocks), TOV (Turnovers), PIR (Performance Index Rating).  
-   - Calculated derived metrics such as AST/TOV ratio and Team Efficiency Index (PIR per game).  
-   - Added Win% = W / (W + L) as the target variable.  
-
+   - Column names will be standardized as: FG% (Field Goal Percentage), 3P% (Three-Point Percentage), FT% (Free Throw Percentage), REB (Rebounds), AST (Assists), STL (Steals), BLK (Blocks), TOV (Turnovers), PIR (Performance Index Rating).  
+   - Derived metrics such as AST/TOV ratio and Team Efficiency Index (PIR per game) will be calculated.  
+     
 3. **Exploratory Data Analysis (EDA):**  
-   - Computed **Spearman correlation** between each metric and final standings.  
-   - Visualized patterns using heatmaps and scatter plots.  
+   - **Spearman correlation** between each metric and final standings will be computed.  
+   - Patterns will be visualized using heatmaps and scatter plots.  
 
 4. **Modeling:**  
-   - Applied Multiple Linear Regression and Random Forest Regressor models to evaluate feature impact.  
+   - Multiple Linear Regression and Random Forest Regressor models will be applied to evaluate feature impact.  
   
 5. **Evaluation and Comparison:**  
-   - Compared models to ensure consistent patterns across seasons.  
-   - Highlighted features with strong positive or negative correlations with ranking success.
+   - Models will be compared to identify consistent patterns across seasons.  
+   - Features with strong positive or negative correlations with ranking success will be highlighted.
+
+
+## Hypotheses 
+
+1. Overall Statistical Association :
+   - H0: None of the team performance metrics have a significant relationship with the final league standing.
+   - H1 : At least some team performance metrics are significantly associated with the final league standing.
+
+2. Dominant Performance Indicators :
+   - H0: All of the performance metrics have equal impact to season outcomes; no metric is more strongly associated with the final standing than the others.
+   - H1: Certain performance metrics have strong correlation with the season outcomes, and final standing. 
   
 
 
