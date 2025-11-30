@@ -20,8 +20,8 @@ The main statistics include field goal, three-point, and free-throw percentages;
 ## Methodology  
 
 1. **Data Collection:**  
-   Team statistics will be collected for several consecutive EuroLeague seasons using `pandas.read_html()` from the official EuroLeague website.  
-   Each season’s data table will be merged into a single dataset with a new column, `Season`, for temporal reference.  
+   Team statistics will be collected for several consecutive EuroLeague seasons using `pandas.read_html()` from the Hack a Stat website.
+   Data will be saved in cvs format.   
 
 2. **Data Cleaning and Feature Engineering:**  
    - Column names will be standardized as: FG% (Field Goal Percentage), 3P% (Three-Point Percentage), FT% (Free Throw Percentage), REB (Rebounds), AST (Assists), STL (Steals), BLK (Blocks), TOV (Turnovers), PIR (Performance Index Rating).  
