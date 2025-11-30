@@ -1,1 +1,70 @@
+import pandas as pd
 
+season_links = {
+    "2024_2025": "https://hackastat.eu/en/teams-stats/?league%5B%5D=1&season%5B%5D=2024-2025&phase%5B%5D=REGULAR+SEASON&outcome=&location=&from=&to=&per_mode=total&limit=20#team-stats",
+    "2023_2024": "https://hackastat.eu/en/teams-stats/?league%5B%5D=1&season%5B%5D=2023-2024&phase%5B%5D=REGULAR+SEASON&outcome=&location=&from=&to=&per_mode=total&limit=20#team-stats",
+    "2022_2023": "https://hackastat.eu/en/teams-stats/?league%5B%5D=1&season%5B%5D=2022-2023&phase%5B%5D=REGULAR+SEASON&outcome=&location=&from=&to=&per_mode=total&limit=20#team-stats",
+    "2021_2022": "https://hackastat.eu/en/teams-stats/?league%5B%5D=1&season%5B%5D=2021-2022&phase%5B%5D=REGULAR+SEASON&outcome=&location=&from=&to=&per_mode=total&limit=20#team-stats",
+}
+
+# İstenen kolonlar (W ve L EKLENDİ)
+DESIRED_COLS = [
+    "W", "L",
+    "PTS", "2PM", "2PA", "3PM", "3PA",
+    "FGM", "FGA", "FTM",
+    "ORB", "DRB",
+    "AST", "TOV",
+    "ST", "BLK",
+]
+
+def normalize_columns(df):
+    if isinstance(df.columns, pd.MultiIndex):
+        df.columns = [" ".join([str(x) for x in col if str(x) != "nan"]) for col in df.columns]
+
+    rename_map = {}
+    for c in df.columns:
+        fixed = c.replace(" ", "").upper()
+
+        # sayı isim eşleştirme
+        if fixed in ["2PTM", "2PM"]:
+            rename_map[c] = "2PM"
+        if fixed in ["2PTA", "2PA"]:
+            rename_map[c] = "2PA"
+        if fixed in ["3PTM", "3PM"]:
+            rename_map[c] = "3PM"
+        if fixed in ["3PTA", "3PA"]:
+            rename_map[c] = "3PA"
+        if fixed in ["OREB", "OFFREB", "OR"]:
+            rename_map[c] = "ORB"
+        if fixed in ["DREB", "DEFREB", "DR"]:
+            rename_map[c] = "DRB"
+        if fixed in ["TURNOVER", "TURNOVERS"]:
+            rename_map[c] = "TOV"
+        if fixed in ["STL", "STEALS"]:
+            rename_map[c] = "ST"
+
+    return df.rename(columns=rename_map)
+
+def extract_season(url):
+    df = pd.read_html(url, header=0)[0]
+    df = normalize_columns(df)
+
+    
+    df["TEAM"] = df.iloc[:, 1]
+
+    
+    numeric_cols = [c for c in DESIRED_COLS if c in df.columns]
+
+    
+    final = df[["TEAM"] + numeric_cols]
+
+    
+    if "W" in final.columns:
+        final = final.sort_values(by="W", ascending=False)
+
+    return final
+
+
+for season, link in season_links.items():
+    df = extract_season(link)
+    df.to_csv(f"{season}_stats.csv", index=False)
